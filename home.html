@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SocialLune - Home</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 0; background-color: #f0f0f0; }
+header { background-color: #6a0dad; color: white; padding: 1rem 2rem; text-align: center; }
+.container { max-width: 800px; margin: 2rem auto; background-color: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+.post { border-bottom: 1px solid #ccc; padding: 1rem 0; display: flex; align-items: flex-start; }
+.post:last-child { border-bottom: none; }
+.profile-pic { width: 50px; height: 50px; border-radius: 50%; margin-right: 1rem; }
+.post-content { flex: 1; }
+.username { font-weight: bold; margin-bottom: 0.5rem; }
+.actions { margin-top: 0.5rem; }
+.actions button { margin-right: 0.5rem; padding: 0.3rem 0.6rem; border: none; background-color: #6a0dad; color: white; border-radius: 3px; cursor: pointer; }
+.actions button:hover { background-color: #4b0082; }
+input[type=text] { width: 100%; padding: 0.8rem; margin: 0.5rem 0; border: 1px solid #ccc; border-radius: 5px; }
+</style>
+</head>
+<body>
+<header>
+<h1>Bem-vindo ao SocialLune!</h1>
+</header>
+<div class="container">
+<h2>Crie um novo post</h2>
+<input type="text" id="usernameInput" placeholder="Seu nome">
+<input type="text" id="newPost" placeholder="Escreva algo...">
+<button onclick="addPost()">Postar</button>
+<h2>Feed</h2>
+<div id="feed"></div>
+</div>
+<script>
+function addPost() {
+    const postInput = document.getElementById('newPost');
+    const usernameInput = document.getElementById('usernameInput');
+    const feed = document.getElementById('feed');
+    const postText = postInput.value.trim();
+    const username = usernameInput.value.trim() || 'Anônimo';
+    if(postText !== '') {
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post';
+        const profilePic = document.createElement('img');
+        profilePic.src = 'https://via.placeholder.com/50';
+        profilePic.alt = 'Foto de perfil';
+        profilePic.className = 'profile-pic';
+        const postContent = document.createElement('div');
+        postContent.className = 'post-content';
+        const userDiv = document.createElement('div');
+        userDiv.className = 'username';
+        userDiv.textContent = username;
+        const textDiv = document.createElement('div');
+        textDiv.textContent = postText;
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'actions';
+        const likeBtn = document.createElement('button');
+        likeBtn.textContent = '👍 0';
+        likeBtn.onclick = function() {
+            const count = parseInt(likeBtn.textContent.split(' ')[1]) + 1;
+            likeBtn.textContent = '👍 ' + count;
+        };
+        const commentBtn = document.createElement('button');
+        commentBtn.textContent = '💬 Comentar';
+        commentBtn.onclick = function() {
+            const comment = prompt('Digite seu comentário:');
+            if(comment) {
+                const commentDiv = document.createElement('div');
+                commentDiv.textContent = comment;
+                commentDiv.style.marginLeft = '1rem';
+                commentDiv.style.fontStyle = 'italic';
+                postContent.appendChild(commentDiv);
+            }
+        };
+        actionsDiv.appendChild(likeBtn);
+        actionsDiv.appendChild(commentBtn);
+        postContent.appendChild(userDiv);
+        postContent.appendChild(textDiv);
+        postContent.appendChild(actionsDiv);
+        postDiv.appendChild(profilePic);
+        postDiv.appendChild(postContent);
+        feed.prepend(postDiv);
+        postInput.value = '';
+    } else {
+        alert('O post não pode estar vazio!');
+    }
+}
+</script>
+</body>
+</html>
